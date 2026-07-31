@@ -1,0 +1,202 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to build (e.g. v0.1.0). If empty, uses the current commit.'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows (x64)
+            os: windows-latest
+            forge_args: ''
+            artifact_glob: |
+              out/make/**/*.exe
+              out/make/**/*.nupkg
+              out/make/**/RELEASES
+              out/make/zip/**/*.zip
+          - name: macOS (Apple Silicon)
+            os: macos-latest
+            forge_args: '--arch=arm64'
+            artifact_glob: |
+              out/make/**/*.dmg
+              out/make/zip/**/*.zip
+          - name: macOS (Intel)
+            os: macos-13
+            forge_args: '--arch=x64'
+            artifact_glob: |
+              out/make/**/*.dmg
+              out/make/zip/**/*.zip
+          - name: Linux (x64)
+            os: ubuntu-latest
+            forge_args: ''
+            artifact_glob: |
+              out/make/deb/**/*.deb
+              out/make/rpm/**/*.rpm
+              out/make/zip/**/*.zip
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Linux packaging tools
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm fakeroot dpkg
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify (typecheck + lint + build)
+        run: npm run verify
+
+      - name: Make distributables
+        shell: bash
+        run: npx electron-forge make ${{ matrix.forge_args }}
+
+      - name: List build outputs
+        shell: bash
+        run: |
+          echo "=== out/make tree ==="
+          find out/make -type f | sort || true
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: jobcopilot-${{ matrix.os }}-${{ matrix.forge_args && 'custom' || 'default' }}
+          path: |
+            out/make/**/*.exe
+            out/make/**/*.nupkg
+            out/make/**/RELEASES
+            out/make/**/*.dmg
+            out/make/**/*.deb
+            out/make/**/*.rpm
+            out/make/**/*.zip
+          if-no-files-found: warn
+          retention-days: 14
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Flatten and rename artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+
+          copy_with_prefix() {
+            local file="$1"
+            local prefix="$2"
+            local base
+            base="$(basename "$file")"
+            # If filename already contains the version, keep as-is; else add prefix.
+            if [[ "$base" == *"$VERSION"* || "$base" == *"JobCopilot"* ]]; then
+              cp "$file" "release/${prefix}${base}"
+            else
+              cp "$file" "release/${prefix}${base}"
+            fi
+          }
+
+          # Windows
+          for f in $(find dist -type f -name "*.exe"); do
+            cp "$f" "release/JobCopilot-Setup-${VERSION}-win-x64.exe"
+          done
+          for f in $(find dist -path "*windows-latest*" -type f -name "*.zip"); do
+            cp "$f" "release/JobCopilot-${VERSION}-win-x64.zip"
+          done
+
+          # macOS arm64
+          for f in $(find dist -path "*macos-latest*" -type f -name "*.dmg"); do
+            cp "$f" "release/JobCopilot-${VERSION}-mac-arm64.dmg"
+          done
+          for f in $(find dist -path "*macos-latest*" -type f -name "*.zip"); do
+            cp "$f" "release/JobCopilot-${VERSION}-mac-arm64.zip"
+          done
+
+          # macOS x64
+          for f in $(find dist -path "*macos-13*" -type f -name "*.dmg"); do
+            cp "$f" "release/JobCopilot-${VERSION}-mac-x64.dmg"
+          done
+          for f in $(find dist -path "*macos-13*" -type f -name "*.zip"); do
+            cp "$f" "release/JobCopilot-${VERSION}-mac-x64.zip"
+          done
+
+          # Linux
+          for f in $(find dist -type f -name "*.deb"); do
+            cp "$f" "release/JobCopilot-${VERSION}-linux-x64.deb"
+          done
+          for f in $(find dist -type f -name "*.rpm"); do
+            cp "$f" "release/JobCopilot-${VERSION}-linux-x64.rpm"
+          done
+          for f in $(find dist -path "*ubuntu*" -type f -name "*.zip"); do
+            cp "$f" "release/JobCopilot-${VERSION}-linux-x64.zip"
+          done
+
+          echo "=== release/ contents ==="
+          ls -la release/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          body: |
+            ## JobCopilot ${{ github.ref_name }}
+
+            Windows-first Electron desktop mock of an AI-assisted job-search and application platform.
+
+            ### Downloads
+
+            | Platform | File |
+            |---|---|
+            | Windows (installer) | `JobCopilot-Setup-*-win-x64.exe` |
+            | Windows (portable ZIP) | `JobCopilot-*-win-x64.zip` |
+            | macOS (Apple Silicon) | `JobCopilot-*-mac-arm64.dmg` |
+            | macOS (Intel) | `JobCopilot-*-mac-x64.dmg` |
+            | Linux (Debian/Ubuntu) | `JobCopilot-*-linux-x64.deb` |
+            | Linux (Fedora/RHEL) | `JobCopilot-*-linux-x64.rpm` |
+            | Linux (portable ZIP) | `JobCopilot-*-linux-x64.zip` |
+
+            ### First-run notes
+
+            These builds are **unsigned**. On Windows, SmartScreen will show a warning — click "More info" → "Run anyway". On macOS, right-click the app → **Open** the first time to bypass Gatekeeper.
+
+            This is a **mock** application. It does not interact with real job boards, ATS systems, LinkedIn, or email.

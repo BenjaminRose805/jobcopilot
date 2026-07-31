@@ -2,6 +2,8 @@ import type { ForgeConfig } from '@electron-forge/shared-types';
 import { MakerSquirrel } from '@electron-forge/maker-squirrel';
 import { MakerZIP } from '@electron-forge/maker-zip';
 import { MakerDeb } from '@electron-forge/maker-deb';
+import { MakerRpm } from '@electron-forge/maker-rpm';
+import { MakerDMG } from '@electron-forge/maker-dmg';
 import { VitePlugin } from '@electron-forge/plugin-vite';
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
@@ -22,6 +24,8 @@ const config: ForgeConfig = {
     }),
     new MakerZIP({}, ['darwin', 'win32', 'linux']),
     new MakerDeb({ options: { name: 'jobcopilot', productName: 'JobCopilot' } }),
+    new MakerRpm({ options: { name: 'jobcopilot', productName: 'JobCopilot' } }),
+    new MakerDMG({ name: 'JobCopilot' }, ['darwin']),
   ],
   plugins: [
     new VitePlugin({

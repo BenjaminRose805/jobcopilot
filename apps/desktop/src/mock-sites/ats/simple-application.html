@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Application — Brightgate Hiring</title>
+    <link rel="stylesheet" href="mock://static/css/base.css" />
+    <link rel="stylesheet" href="mock://static/css/vendors.css" />
+  </head>
+  <body
+    class="brightgate"
+    data-mock-page="ats/simple-application"
+    data-page-step="application"
+    data-page-status="editing"
+    data-flags='{"validation":"pending"}'
+  >
+    <div class="topbar">
+      <span class="logo">brightgate<span>·hiring</span></span>
+      <span class="meta" id="ats-context">Application</span>
+      <span style="flex: 1"></span>
+      <span class="meta">Powered by Brightgate</span>
+    </div>
+
+    <div class="wrap">
+      <div class="card">
+        <h1 id="role-title">Security Platform Engineer</h1>
+        <div class="meta-row">
+          <span id="company-name">Meridian Compute</span>
+          <span id="req-id">Req #MC-4471</span>
+          <span>Estimated time: 6 minutes</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Your details</h2>
+        <div class="grid-2">
+          <div class="field">
+            <label for="fullName">Full name<span class="req">*</span></label>
+            <input id="fullName" data-field="fullName" data-label="Full name" type="text" required />
+          </div>
+          <div class="field">
+            <label for="email">Email<span class="req">*</span></label>
+            <input id="email" data-field="email" data-label="Email" type="email" required />
+          </div>
+          <div class="field">
+            <label for="phone">Phone<span class="req">*</span></label>
+            <input id="phone" data-field="phone" data-label="Phone" type="tel" required />
+          </div>
+          <div class="field">
+            <label for="location">Current location<span class="req">*</span></label>
+            <input id="location" data-field="location" data-label="Current location" type="text" required />
+          </div>
+          <div class="field">
+            <label for="portfolio">Portfolio / website</label>
+            <input id="portfolio" data-field="portfolio" data-label="Portfolio" type="url" />
+          </div>
+          <div class="field">
+            <label for="github">Code profile</label>
+            <input id="github" data-field="github" data-label="Code profile" type="url" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Resume</h2>
+        <div class="field">
+          <span class="field-label">Attach your resume<span class="req">*</span></span>
+          <div class="filebox" data-field="resume" data-label="Resume" data-type="file" data-value="" data-required="true">
+            <button class="btn btn--ghost" type="button" data-action="choose-resume" data-label="Choose file">
+              Choose file
+            </button>
+            <span class="fname">No file selected</span>
+          </div>
+          <div class="hint">PDF or DOCX, 5&nbsp;MB max. This is a simulated upload — no file leaves your machine.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>A few questions</h2>
+
+        <div class="field">
+          <label for="whyInterested">Why are you interested in this role?<span class="req">*</span></label>
+          <textarea id="whyInterested" data-field="whyInterested" data-label="Why are you interested in this role?" required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="pythonYears">Years of professional Python experience<span class="req">*</span></label>
+          <select id="pythonYears" data-field="pythonYears" data-label="Years of professional Python experience" required>
+            <option value=""></option>
+            <option value="0-1">0–1</option>
+            <option value="2-3">2–3</option>
+            <option value="4-6">4–6</option>
+            <option value="7+">7+</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="terraformExperience">Describe your infrastructure-as-code experience<span class="req">*</span></label>
+          <textarea id="terraformExperience" data-field="terraformExperience" data-label="Infrastructure-as-code experience" required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="workAuth">Are you legally authorised to work in the United States?<span class="req">*</span></label>
+          <select id="workAuth" data-field="workAuth" data-label="Work authorisation" required>
+            <option value=""></option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+            <option value="Requires sponsorship">Yes, but I will require sponsorship in the future</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="startDate">Earliest start date</label>
+          <input id="startDate" data-field="startDate" data-label="Earliest start date" type="text" placeholder="e.g. 4 weeks from offer" />
+        </div>
+
+        <div id="validation" class="notice notice--danger" style="display: none"></div>
+
+        <div class="actions">
+          <button class="btn btn--primary" data-action="submit" data-label="Submit application">
+            Submit application
+          </button>
+          <button class="btn btn--ghost" data-action="save-draft" data-label="Save draft">Save draft</button>
+          <span class="spacer"></span>
+          <span class="meta" id="completion">0 of 8 required fields complete</span>
+        </div>
+      </div>
+
+      <p class="fineprint">
+        Brightgate is a fictional applicant tracking system built for this demo. Submitting here
+        writes to nothing but local demo state.
+      </p>
+    </div>
+
+    <div class="mock-flag">Simulated ATS</div>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      const company = params.get('co') || 'Meridian Compute';
+      const role = params.get('role') || 'Security Platform Engineer';
+      const req = params.get('req') || 'MC-4471';
+      document.getElementById('company-name').textContent = company;
+      document.getElementById('role-title').textContent = role;
+      document.getElementById('req-id').textContent = 'Req #' + req;
+      document.getElementById('ats-context').textContent = company + ' · Application';
+      document.title = role + ' — ' + company + ' · Brightgate';
+
+      const REQUIRED = [
+        'fullName',
+        'email',
+        'phone',
+        'location',
+        'resume',
+        'whyInterested',
+        'pythonYears',
+        'terraformExperience',
+        'workAuth',
+      ];
+
+      function valueOf(name) {
+        const el = document.querySelector('[data-field="' + name + '"]');
+        if (!el) return '';
+        if (el.dataset.type === 'file') return el.dataset.value || '';
+        return (el.value || '').trim();
+      }
+
+      function refresh() {
+        const done = REQUIRED.filter((f) => valueOf(f) !== '').length;
+        document.getElementById('completion').textContent =
+          done + ' of ' + REQUIRED.length + ' required fields complete';
+        const ready = done === REQUIRED.length;
+        document.body.dataset.pageStatus = ready ? 'ready-to-submit' : 'editing';
+        document.body.dataset.flags = JSON.stringify({
+          validation: ready ? 'ok' : 'pending',
+          requiredRemaining: String(REQUIRED.length - done),
+        });
+        const box = document.querySelector('.filebox');
+        box.querySelector('.fname').textContent = box.dataset.value || 'No file selected';
+      }
+
+      document.addEventListener('input', refresh, true);
+      document.addEventListener('change', refresh, true);
+      document.addEventListener('mock:field', refresh, true);
+      new MutationObserver(refresh).observe(document.querySelector('.filebox'), {
+        attributes: true,
+        attributeFilter: ['data-value'],
+      });
+
+      document.querySelector('[data-action="choose-resume"]').addEventListener('click', () => {
+        // A real file picker is intentionally not opened; the demo simulates it.
+        const box = document.querySelector('.filebox');
+        box.dataset.value = box.dataset.value ? '' : 'resume.pdf';
+        refresh();
+      });
+
+      document.querySelector('[data-action="save-draft"]').addEventListener('click', () => {
+        document.body.dataset.pageStatus = 'draft-saved';
+      });
+
+      document.querySelector('[data-action="submit"]').addEventListener('click', () => {
+        const missing = REQUIRED.filter((f) => valueOf(f) === '');
+        const box = document.getElementById('validation');
+        if (missing.length) {
+          box.style.display = 'block';
+          box.textContent = 'Please complete these required fields: ' + missing.join(', ');
+          document.body.dataset.pageStatus = 'validation-error';
+          return;
+        }
+        box.style.display = 'none';
+        document.body.dataset.pageStatus = 'submitting';
+        const q = new URLSearchParams({ co: company, role: role, req: req });
+        setTimeout(() => {
+          location.href = 'mock://application/submitted?' + q.toString();
+        }, 350);
+      });
+
+      refresh();
+    </script>
+  </body>
+</html>

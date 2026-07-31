@@ -1,0 +1,316 @@
+/* Shared reset + form primitives for every fictional mock site.
+   These pages are static fixtures served from the bundled `mock:` protocol.
+   No real branding, no network access, nothing is ever submitted anywhere. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1e2230;
+  background: #f4f5f8;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 28px 24px 64px;
+}
+
+.wrap--wide {
+  max-width: 1040px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e2e5ec;
+  border-radius: 8px;
+  padding: 22px 24px;
+  margin-bottom: 18px;
+}
+
+h1 {
+  font-size: 24px;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: 16px;
+  margin: 0 0 12px;
+}
+
+h3 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+  margin: 22px 0 10px;
+}
+
+p {
+  margin: 0 0 12px;
+}
+
+ul {
+  margin: 0 0 14px;
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+.meta {
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  color: #5b6273;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.pill {
+  display: inline-block;
+  border: 1px solid #d8dce5;
+  border-radius: 999px;
+  padding: 1px 10px;
+  font-size: 12px;
+  background: #f7f8fb;
+  color: #4b5163;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field > label,
+.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333a4d;
+}
+
+.req {
+  color: #c0392b;
+  margin-left: 2px;
+}
+
+.hint {
+  font-size: 12px;
+  color: #7a8093;
+  margin-top: 4px;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='tel'],
+input[type='url'],
+textarea,
+select {
+  width: 100%;
+  font: inherit;
+  padding: 8px 10px;
+  border: 1px solid #ccd2de;
+  border-radius: 5px;
+  background: #fff;
+  color: inherit;
+}
+
+textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid #2f6df6;
+  outline-offset: 1px;
+  border-color: #2f6df6;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 18px;
+}
+
+.btn {
+  font: inherit;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: #eceef3;
+  color: #333a4d;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: #ccd2de;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #eceef3;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* File upload mock — a real <input type=file> cannot be scripted, so uploads
+   are modelled with a data attribute the page driver sets. */
+.filebox {
+  border: 1px dashed #b9c0cf;
+  border-radius: 6px;
+  padding: 14px;
+  background: #fafbfd;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filebox[data-value]:not([data-value='']) {
+  border-style: solid;
+  border-color: #2e9e63;
+  background: #f2fbf6;
+}
+
+.filebox .fname {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.filebox[data-value]:not([data-value='']) .fname {
+  color: #1d7a4b;
+  font-weight: 600;
+}
+
+.notice {
+  border-left: 3px solid #d9a441;
+  background: #fdf7ec;
+  padding: 10px 14px;
+  border-radius: 0 5px 5px 0;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.notice--danger {
+  border-left-color: #c0392b;
+  background: #fdf0ee;
+}
+
+.notice--info {
+  border-left-color: #2f6df6;
+  background: #eef3fe;
+}
+
+.fineprint {
+  font-size: 11px;
+  color: #98a0b3;
+  margin-top: 26px;
+  text-align: center;
+}
+
+.steps {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.steps .step {
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  background: #eceef3;
+  color: #7a8093;
+}
+
+.steps .step.active {
+  background: #1f3d7a;
+  color: #fff;
+  font-weight: 600;
+}
+
+.steps .step.done {
+  background: #d9ecdf;
+  color: #1d7a4b;
+}
+
+.center-box {
+  max-width: 420px;
+  margin: 72px auto;
+}
+
+.mock-flag {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #6b5bd2;
+  padding: 3px 9px;
+  border-radius: 3px;
+  opacity: 0.9;
+  z-index: 2147483645;
+}
+
+.confirm-mark {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #e3f3ea;
+  color: #1d7a4b;
+  font-size: 24px;
+  line-height: 46px;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.confirm-block {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px solid #e2e5ea;
+  border-radius: 4px;
+  background: #fafbfc;
+  font-size: 13px;
+  line-height: 2;
+}

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Screening questions — Northwind Talent Suite</title>
+    <link rel="stylesheet" href="mock://static/css/base.css" />
+    <link rel="stylesheet" href="mock://static/css/vendors.css" />
+  </head>
+  <body
+    class="northwind"
+    data-mock-page="application/unexpected-question"
+    data-page-step="screening"
+    data-page-status="editing"
+    data-flags='{"screeningAnswered":"false","hasUnsupportedQuestion":"true"}'
+  >
+    <div class="topbar">
+      <span class="logo">NORTHWIND</span>
+      <span class="sub">Talent Suite · Screening questions</span>
+      <span style="flex: 1"></span>
+      <span class="sub" id="ctx">Halcyon Grid</span>
+    </div>
+
+    <div class="wrap">
+      <div class="card">
+        <h1 id="role-title">Staff DevSecOps Engineer</h1>
+        <div class="meta-row">
+          <span id="company-name">Halcyon Grid</span>
+          <span id="req-id">Req #HG-2210</span>
+          <span>3 questions from the hiring team</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="notice notice--info">
+          These questions were added by the hiring manager after the requisition was published. They
+          are not part of the standard Northwind application.
+        </div>
+
+        <div class="field">
+          <label for="k8sOwnershipYears"
+            >How many years have you managed production Kubernetes clusters?<span class="req">*</span></label
+          >
+          <select
+            id="k8sOwnershipYears"
+            data-field="k8sOwnershipYears"
+            data-label="Years managing production Kubernetes clusters"
+            required
+          >
+            <option value=""></option>
+            <option value="None">None</option>
+            <option value="Less than 1 year">Less than 1 year</option>
+            <option value="1-2 years">1–2 years</option>
+            <option value="3-5 years">3–5 years</option>
+            <option value="5+ years">5+ years</option>
+          </select>
+          <div class="hint">
+            "Managed" means you were the owning engineer for cluster upgrades, capacity and
+            on-call.
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="k8sOwnershipDetail"
+            >Briefly describe the largest cluster fleet you personally owned<span class="req">*</span></label
+          >
+          <textarea
+            id="k8sOwnershipDetail"
+            data-field="k8sOwnershipDetail"
+            data-label="Largest cluster fleet personally owned"
+            required
+          ></textarea>
+        </div>
+
+        <div class="field">
+          <label for="pipelineOwnership"
+            >Which CI/CD platforms have you owned end to end?<span class="req">*</span></label
+          >
+          <input
+            id="pipelineOwnership"
+            data-field="pipelineOwnership"
+            data-label="CI/CD platforms owned end to end"
+            type="text"
+          />
+        </div>
+
+        <div class="field">
+          <label for="complianceTooling">Which vulnerability management tooling have you operated?</label>
+          <input
+            id="complianceTooling"
+            data-field="complianceTooling"
+            data-label="Vulnerability management tooling"
+            type="text"
+          />
+        </div>
+
+        <div id="validation" class="notice notice--danger" style="display: none"></div>
+
+        <div class="actions">
+          <button class="btn btn--ghost" data-action="back" data-label="Back to application">Back</button>
+          <span class="spacer"></span>
+          <span class="meta" id="completion"></span>
+          <button class="btn btn--primary" data-action="continue" data-label="Save answers and continue">
+            Save and continue
+          </button>
+        </div>
+      </div>
+
+      <p class="fineprint">
+        Northwind Talent Suite is a fictional applicant tracking system built for this demo.
+      </p>
+    </div>
+
+    <div class="mock-flag">Simulated ATS</div>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      const company = params.get('co') || 'Halcyon Grid';
+      const role = params.get('role') || 'Staff DevSecOps Engineer';
+      const req = params.get('req') || 'HG-2210';
+      document.getElementById('company-name').textContent = company;
+      document.getElementById('role-title').textContent = role;
+      document.getElementById('req-id').textContent = 'Req #' + req;
+      document.getElementById('ctx').textContent = company;
+      document.title = 'Screening questions — ' + company;
+
+      const REQUIRED = ['k8sOwnershipYears', 'k8sOwnershipDetail', 'pipelineOwnership'];
+
+      function valueOf(n) {
+        const el = document.querySelector('[data-field="' + n + '"]');
+        return el ? (el.value || '').trim() : '';
+      }
+
+      function refresh() {
+        const done = REQUIRED.filter((f) => valueOf(f) !== '').length;
+        document.getElementById('completion').textContent = done + ' / ' + REQUIRED.length + ' answered';
+        const ready = done === REQUIRED.length;
+        document.body.dataset.pageStatus = ready ? 'ready-to-continue' : 'editing';
+        document.body.dataset.flags = JSON.stringify({
+          screeningAnswered: ready ? 'true' : 'false',
+          hasUnsupportedQuestion: 'true',
+          k8sAnswered: valueOf('k8sOwnershipYears') ? 'true' : 'false',
+        });
+      }
+
+      document.addEventListener('input', refresh, true);
+      document.addEventListener('change', refresh, true);
+      document.addEventListener('mock:field', refresh, true);
+
+      function backToApplication(extra) {
+        const q = new URLSearchParams(
+          Object.assign({ co: company, role: role, req: req }, extra || {}),
+        );
+        location.href = 'mock://ats/multistep-application?' + q.toString();
+      }
+
+      document.querySelector('[data-action="back"]').addEventListener('click', () => {
+        backToApplication({ step: 'experience' });
+      });
+
+      document.querySelector('[data-action="continue"]').addEventListener('click', () => {
+        const missing = REQUIRED.filter((f) => valueOf(f) === '');
+        const box = document.getElementById('validation');
+        if (missing.length) {
+          box.style.display = 'block';
+          box.textContent = 'These questions are required: ' + missing.join(', ');
+          document.body.dataset.pageStatus = 'validation-error';
+          return;
+        }
+        box.style.display = 'none';
+        document.body.dataset.pageStatus = 'screening-complete';
+        setTimeout(() => backToApplication({ step: 'review', screening: 'answered' }), 300);
+      });
+
+      refresh();
+    </script>
+  </body>
+</html>

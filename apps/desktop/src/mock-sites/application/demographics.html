@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Voluntary self-identification — Lattis</title>
+    <link rel="stylesheet" href="mock://static/css/base.css" />
+    <link rel="stylesheet" href="mock://static/css/vendors.css" />
+  </head>
+  <body
+    class="lattis"
+    data-mock-page="application/demographics"
+    data-page-step="demographics"
+    data-page-status="awaiting-human"
+    data-requires-human="true"
+    data-requires-human-reason="Voluntary self-identification. JobCopilot never answers demographic, disability or veteran-status questions on your behalf — regardless of autonomy settings."
+    data-flags='{"demographicsAnswered":"false","alwaysHumanReview":"true"}'
+  >
+    <div class="topbar">
+      <span class="logo">Lattis</span>
+      <span style="flex: 1"></span>
+      <span class="meta" id="ctx">Verdance Labs</span>
+    </div>
+
+    <div class="wrap">
+      <div class="card">
+        <h1>Voluntary self-identification</h1>
+        <div class="meta-row">
+          <span id="company-name">Verdance Labs</span>
+          <span id="req-id">Req #VL-118</span>
+          <span>Optional — does not affect your application</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="notice">
+          <strong>Human required.</strong> These questions are about you personally. JobCopilot leaves
+          every field blank and hands the page to you, even when full autonomy is enabled. Choosing
+          "Prefer not to say" is always a valid answer.
+        </div>
+
+        <div class="field">
+          <label for="gender">Gender</label>
+          <select id="gender" data-field="gender" data-label="Gender">
+            <option value=""></option>
+            <option value="Prefer not to say">Prefer not to say</option>
+            <option value="Woman">Woman</option>
+            <option value="Man">Man</option>
+            <option value="Non-binary">Non-binary</option>
+            <option value="Self-describe">Prefer to self-describe</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="ethnicity">Race / ethnicity</label>
+          <select id="ethnicity" data-field="ethnicity" data-label="Race or ethnicity">
+            <option value=""></option>
+            <option value="Prefer not to say">Prefer not to say</option>
+            <option value="Category A">Category A (simulated option)</option>
+            <option value="Category B">Category B (simulated option)</option>
+            <option value="Category C">Category C (simulated option)</option>
+            <option value="Two or more">Two or more of the above</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="veteranStatus">Protected veteran status</label>
+          <select id="veteranStatus" data-field="veteranStatus" data-label="Veteran status">
+            <option value=""></option>
+            <option value="Prefer not to say">Prefer not to say</option>
+            <option value="Not a protected veteran">I am not a protected veteran</option>
+            <option value="Protected veteran">I identify as a protected veteran</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="disabilityStatus">Disability status</label>
+          <select id="disabilityStatus" data-field="disabilityStatus" data-label="Disability status">
+            <option value=""></option>
+            <option value="Prefer not to say">Prefer not to answer</option>
+            <option value="No disability">No, I do not have a disability</option>
+            <option value="Has disability">Yes, I have or have had a disability</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <span class="meta">Answering is entirely optional.</span>
+          <span class="spacer"></span>
+          <button class="btn btn--ghost" data-action="decline" data-label="Decline to answer">
+            Decline to answer
+          </button>
+          <button class="btn btn--primary" data-action="continue" data-label="Continue">Continue</button>
+        </div>
+      </div>
+
+      <p class="fineprint">
+        A simulated EEO-style page. Nothing entered here is stored, transmitted or used anywhere in
+        this demo.
+      </p>
+    </div>
+
+    <div class="mock-flag">Simulated ATS</div>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      const company = params.get('co') || 'Verdance Labs';
+      const role = params.get('role') || 'AI Platform Engineer — Agent Infrastructure';
+      const req = params.get('req') || 'VL-118';
+      document.getElementById('company-name').textContent = company;
+      document.getElementById('req-id').textContent = 'Req #' + req;
+      document.getElementById('ctx').textContent = company;
+
+      const FIELDS = ['gender', 'ethnicity', 'veteranStatus', 'disabilityStatus'];
+
+      function valueOf(n) {
+        const el = document.querySelector('[data-field="' + n + '"]');
+        return el ? (el.value || '').trim() : '';
+      }
+
+      function refresh() {
+        const answered = FIELDS.some((f) => valueOf(f) !== '');
+        document.body.dataset.flags = JSON.stringify({
+          demographicsAnswered: answered ? 'true' : 'false',
+          alwaysHumanReview: 'true',
+        });
+      }
+
+      document.addEventListener('input', refresh, true);
+      document.addEventListener('change', refresh, true);
+      document.addEventListener('mock:field', refresh, true);
+
+      function finish(status) {
+        document.body.dataset.pageStatus = status;
+        document.body.dataset.requiresHuman = 'false';
+        const q = new URLSearchParams({ co: company, role: role, req: req });
+        setTimeout(() => {
+          location.href = 'mock://application/submitted?' + q.toString();
+        }, 300);
+      }
+
+      document.querySelector('[data-action="decline"]').addEventListener('click', () => {
+        FIELDS.forEach((f) => {
+          const el = document.querySelector('[data-field="' + f + '"]');
+          if (el) el.value = 'Prefer not to say';
+        });
+        refresh();
+        finish('declined');
+      });
+
+      document.querySelector('[data-action="continue"]').addEventListener('click', () => {
+        refresh();
+        finish('demographics-complete');
+      });
+
+      refresh();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>AI Platform Engineer — Verdance Labs</title>
+    <link rel="stylesheet" href="mock://static/css/base.css" />
+    <link rel="stylesheet" href="mock://static/css/vendors.css" />
+  </head>
+  <body
+    class="employer"
+    data-mock-page="company/jobs/ai-platform-engineer"
+    data-page-step="posting"
+    data-page-status="viewing"
+    data-flags='{"employerVerified":"true"}'
+  >
+    <div class="brandbar">
+      <span class="logo">VERDANCE LABS</span>
+      <span>Careers</span>
+      <span style="flex: 1"></span>
+      <span class="verified">Official careers page</span>
+    </div>
+
+    <div class="hero">
+      <div class="wrap wrap--wide">
+        <h1>AI Platform Engineer — Agent Infrastructure</h1>
+        <div class="meta-row">
+          <span>Applied AI Infrastructure</span>
+          <span>Remote — US &amp; Canada</span>
+          <span>$190,000 – $235,000</span>
+          <span>Posted 1 day ago</span>
+        </div>
+        <div class="meta-row" style="margin-top: 10px">
+          <span class="pill">Full-time</span>
+          <span class="pill">Senior</span>
+          <span class="pill">Remote</span>
+          <span class="pill">Req #VL-118</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap wrap--wide">
+      <div class="card">
+        <h2>What we're building</h2>
+        <p>
+          Verdance Labs builds the orchestration layer that lets internal teams run long-lived agent
+          workflows safely: sandboxing, tool permissioning, evaluation harnesses and cost controls.
+        </p>
+
+        <h3>You will</h3>
+        <ul>
+          <li>Build the execution sandbox and tool-permission model for agent workloads.</li>
+          <li>Design evaluation and replay infrastructure so agent regressions are catchable.</li>
+          <li>Own the guardrail layer: policy, redaction, audit trails.</li>
+          <li>Work directly with product teams adopting the platform.</li>
+        </ul>
+
+        <h3>Required</h3>
+        <ul>
+          <li>5+ years of backend or platform engineering.</li>
+          <li>Strong Python.</li>
+          <li>Experience building developer-facing platforms or SDKs.</li>
+          <li>Comfort with cloud infrastructure and containerised workloads.</li>
+        </ul>
+
+        <h3>Preferred</h3>
+        <ul>
+          <li>Hands-on experience orchestrating LLM workflows in production.</li>
+          <li>Security background — sandboxing, least-privilege tool access, audit.</li>
+          <li>Open-source contributions in the agent tooling space.</li>
+        </ul>
+
+        <div class="actions">
+          <button class="btn btn--primary" data-action="apply" data-label="Apply">Apply</button>
+          <span class="spacer"></span>
+          <span class="meta">We reply to every application within 10 business days.</span>
+        </div>
+      </div>
+      <p class="fineprint">Verdance Labs is a fictional company. Bundled demo fixture.</p>
+    </div>
+
+    <div class="mock-flag">Simulated employer site</div>
+
+    <script>
+      document.querySelector('[data-action="apply"]').addEventListener('click', () => {
+        document.body.dataset.pageStatus = 'navigating-to-ats';
+        location.href = 'mock://ats/lever-application';
+      });
+    </script>
+  </body>
+</html>

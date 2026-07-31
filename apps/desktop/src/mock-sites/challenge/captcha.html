@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Verify you are human — Northlake Careers</title>
+    <link rel="stylesheet" href="mock://static/css/base.css" />
+    <link rel="stylesheet" href="mock://static/css/vendors.css" />
+  </head>
+  <body
+    class="northwind"
+    data-mock-page="challenge/captcha"
+    data-page-step="challenge"
+    data-page-status="unsolved"
+    data-requires-human="true"
+    data-requires-human-reason="Human-verification challenge. JobCopilot never solves CAPTCHAs — doing so would violate the site's terms."
+    data-flags='{"captchaSolved":"false"}'
+  >
+    <div class="topbar">
+      <span class="logo">NORTHLAKE</span>
+      <span class="sub">Security check</span>
+    </div>
+
+    <div class="wrap">
+      <div class="center-box">
+        <div class="challenge-box">
+          <h1 style="font-size: 18px; margin-bottom: 4px">Verify you are human</h1>
+          <p class="meta">Select every tile containing a <strong>traffic light</strong>.</p>
+
+          <div class="challenge-grid" id="grid"></div>
+
+          <button class="btn btn--primary" data-action="verify" data-label="Verify" style="width: 100%">
+            Verify
+          </button>
+
+          <div class="robot-note">
+            This challenge is deliberately unsolvable by the agent. JobCopilot detects it, stops, and
+            hands the browser to you.
+          </div>
+          <div id="msg" class="meta" style="margin-top: 10px"></div>
+        </div>
+      </div>
+      <p class="fineprint">
+        A simulated human-verification challenge. It is never solved programmatically in this demo.
+      </p>
+    </div>
+
+    <div class="mock-flag">Simulated challenge</div>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      const ICONS = ['🚦', '🌳', '🚦', '🚌', '🌳', '🚦', '🚗', '🌳', '🚌'];
+      const grid = document.getElementById('grid');
+      const picked = new Set();
+
+      ICONS.forEach((icon, i) => {
+        const tile = document.createElement('div');
+        tile.className = 'challenge-tile';
+        tile.textContent = icon;
+        tile.dataset.icon = icon;
+        // Deliberately NOT exposed as `data-action`: the agent has no command
+        // that can reach these tiles.
+        tile.addEventListener('click', (e) => {
+          if (!e.isTrusted) return; // only a real human click counts
+          if (picked.has(i)) {
+            picked.delete(i);
+            tile.classList.remove('picked');
+          } else {
+            picked.add(i);
+            tile.classList.add('picked');
+          }
+        });
+        grid.appendChild(tile);
+      });
+
+      document.querySelector('[data-action="verify"]').addEventListener('click', (e) => {
+        const msg = document.getElementById('msg');
+        if (!e.isTrusted) {
+          msg.textContent = 'Automated interaction detected. This challenge requires a human.';
+          document.body.dataset.pageStatus = 'automation-rejected';
+          return;
+        }
+        const correct = [0, 2, 5];
+        const ok = correct.every((i) => picked.has(i)) && picked.size === correct.length;
+        if (!ok) {
+          msg.textContent = 'Not quite — select all three traffic lights and try again.';
+          document.body.dataset.pageStatus = 'unsolved';
+          return;
+        }
+        msg.textContent = 'Verified. Continuing to your application…';
+        document.body.dataset.pageStatus = 'solved';
+        document.body.dataset.requiresHuman = 'false';
+        document.body.dataset.flags = JSON.stringify({ captchaSolved: 'true' });
+        const q = new URLSearchParams({
+          co: params.get('co') || 'Northlake Systems',
+          role: params.get('role') || 'Cloud Security Engineer II',
+          req: params.get('req') || 'NL-8802',
+        });
+        setTimeout(() => {
+          location.href = 'mock://ats/simple-application?' + q.toString();
+        }, 600);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Security Platform Engineer — Meridian Compute Careers</title>
+    <link rel="stylesheet" href="mock://static/css/base.css" />
+    <link rel="stylesheet" href="mock://static/css/vendors.css" />
+  </head>
+  <body
+    class="employer"
+    data-mock-page="company/jobs/security-platform-engineer"
+    data-page-step="posting"
+    data-page-status="viewing"
+    data-flags='{"employerVerified":"true"}'
+  >
+    <div class="brandbar">
+      <span class="logo">MERIDIAN COMPUTE</span>
+      <span>Careers</span>
+      <span class="spacer" style="flex: 1"></span>
+      <span class="verified" data-field="verificationBadge" data-label="Employer verification" data-value="verified"
+        >Official careers page</span
+      >
+    </div>
+
+    <div class="hero">
+      <div class="wrap wrap--wide">
+        <h1>Security Platform Engineer</h1>
+        <div class="meta-row">
+          <span>Platform Security &amp; Trust</span>
+          <span>Remote — United States</span>
+          <span>$185,000 – $225,000</span>
+          <span>Posted 3 days ago</span>
+        </div>
+        <div class="meta-row" style="margin-top: 10px">
+          <span class="pill">Full-time</span>
+          <span class="pill">Senior</span>
+          <span class="pill">Remote</span>
+          <span class="pill">Req #MC-4471</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap wrap--wide">
+      <div class="card">
+        <h2>About the team</h2>
+        <p>
+          Platform Security &amp; Trust builds the paved road that every Meridian engineering team
+          ships on. We own the internal supply-chain security tooling, the policy engine that gates
+          production deploys, and the secrets platform used by roughly 900 engineers.
+        </p>
+        <p>
+          This is a builder role, not a reviewer role. You will spend most of your week writing Go
+          and Python services, not filling in spreadsheets.
+        </p>
+
+        <h3>What you'll do</h3>
+        <ul>
+          <li>Design and operate the signing and provenance pipeline for all internal artifacts.</li>
+          <li>Extend our policy-as-code layer so security requirements ship as reviewable code.</li>
+          <li>Build self-service remediation tooling that closes vulnerabilities without tickets.</li>
+          <li>Partner with infrastructure teams on identity, secrets and workload attestation.</li>
+          <li>Own the developer experience of security controls end to end.</li>
+        </ul>
+
+        <h3>Required qualifications</h3>
+        <ul>
+          <li>5+ years building production software in a systems or platform context.</li>
+          <li>Hands-on experience with infrastructure-as-code (Terraform or equivalent).</li>
+          <li>Practical CI/CD pipeline engineering, including release gating.</li>
+          <li>Experience remediating vulnerabilities in a large dependency surface.</li>
+          <li>Strong Python or Go.</li>
+        </ul>
+
+        <h3>Preferred qualifications</h3>
+        <ul>
+          <li>Exposure to supply-chain security frameworks (SLSA, in-toto, Sigstore).</li>
+          <li>Experience shipping developer tooling used by other engineers.</li>
+          <li>Familiarity with container orchestration in a production environment.</li>
+          <li>Interest in applying LLM-based automation to security workflows.</li>
+        </ul>
+
+        <h3>Compensation and location</h3>
+        <p class="meta">
+          Base range $185,000 – $225,000 plus equity. Fully remote within the United States. No
+          relocation required. This role does not require a security clearance.
+        </p>
+
+        <div class="actions">
+          <button class="btn btn--primary" data-action="apply" data-label="Apply for this role">
+            Apply for this role
+          </button>
+          <button class="btn btn--ghost" data-action="save" data-label="Save job">Save job</button>
+          <span class="spacer"></span>
+          <span class="meta">Req #MC-4471 · Updated 3 days ago</span>
+        </div>
+      </div>
+
+      <p class="fineprint">
+        Meridian Compute is a fictional company that exists only inside this demo. This page is a
+        bundled static fixture; nothing on it reaches the internet.
+      </p>
+    </div>
+
+    <div class="mock-flag">Simulated employer site</div>
+
+    <script>
+      document.querySelector('[data-action="apply"]').addEventListener('click', () => {
+        document.body.dataset.pageStatus = 'navigating-to-ats';
+        location.href = 'mock://ats/simple-application';
+      });
+      document.querySelector('[data-action="save"]').addEventListener('click', (e) => {
+        e.target.textContent = 'Saved';
+        document.body.dataset.flags = JSON.stringify({ employerVerified: 'true', saved: 'true' });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Candidate Application — Northwind Talent Suite</title>
+    <link rel="stylesheet" href="mock://static/css/base.css" />
+    <link rel="stylesheet" href="mock://static/css/vendors.css" />
+  </head>
+  <body
+    class="northwind"
+    data-mock-page="ats/multistep-application"
+    data-page-step="contact"
+    data-page-status="editing"
+    data-flags='{"stepIndex":"1","stepCount":"4"}'
+  >
+    <div class="topbar">
+      <span class="logo">NORTHWIND</span>
+      <span class="sub">Talent Suite · Candidate Application</span>
+      <span style="flex: 1"></span>
+      <span class="sub" id="ctx">Halcyon Grid</span>
+    </div>
+
+    <div class="wrap">
+      <div class="card">
+        <h1 id="role-title">Staff DevSecOps Engineer</h1>
+        <div class="meta-row">
+          <span id="company-name">Halcyon Grid</span>
+          <span id="req-id">Req #HG-2210</span>
+        </div>
+        <div class="steps" id="steps">
+          <div class="step active" data-step="contact">1. Contact</div>
+          <div class="step" data-step="resume">2. Resume</div>
+          <div class="step" data-step="experience">3. Experience</div>
+          <div class="step" data-step="review">4. Review</div>
+        </div>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="card panel" data-panel="contact">
+        <h2>Contact information</h2>
+        <div class="grid-2">
+          <div class="field">
+            <label for="firstName">First name<span class="req">*</span></label>
+            <input id="firstName" data-field="firstName" data-label="First name" type="text" required />
+          </div>
+          <div class="field">
+            <label for="lastName">Last name<span class="req">*</span></label>
+            <input id="lastName" data-field="lastName" data-label="Last name" type="text" required />
+          </div>
+          <div class="field">
+            <label for="email">Email address<span class="req">*</span></label>
+            <input id="email" data-field="email" data-label="Email address" type="email" required />
+          </div>
+          <div class="field">
+            <label for="phone">Mobile phone<span class="req">*</span></label>
+            <input id="phone" data-field="phone" data-label="Mobile phone" type="tel" required />
+          </div>
+          <div class="field">
+            <label for="city">City<span class="req">*</span></label>
+            <input id="city" data-field="city" data-label="City" type="text" required />
+          </div>
+          <div class="field">
+            <label for="state">State / Region<span class="req">*</span></label>
+            <input id="state" data-field="state" data-label="State" type="text" required />
+          </div>
+        </div>
+        <div class="actions">
+          <span class="spacer"></span>
+          <button class="btn btn--primary" data-action="next-contact" data-label="Continue to resume">
+            Continue
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="card panel" data-panel="resume" style="display: none">
+        <h2>Resume and links</h2>
+        <div class="field">
+          <span class="field-label">Resume<span class="req">*</span></span>
+          <div class="filebox" data-field="resume" data-label="Resume" data-type="file" data-value="" data-required="true">
+            <button class="btn btn--ghost" type="button" data-action="choose-resume" data-label="Attach resume">
+              Attach resume
+            </button>
+            <span class="fname">No file attached</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="codeProfile">Code profile URL</label>
+          <input id="codeProfile" data-field="codeProfile" data-label="Code profile URL" type="url" />
+        </div>
+        <div class="actions">
+          <button class="btn btn--ghost" data-action="back-resume" data-label="Back">Back</button>
+          <span class="spacer"></span>
+          <button class="btn btn--primary" data-action="next-resume" data-label="Continue to experience">
+            Continue
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="card panel" data-panel="experience" style="display: none">
+        <h2>Experience</h2>
+        <div class="field">
+          <label for="currentTitle">Current job title<span class="req">*</span></label>
+          <input id="currentTitle" data-field="currentTitle" data-label="Current job title" type="text" required />
+        </div>
+        <div class="field">
+          <label for="currentEmployer">Current employer<span class="req">*</span></label>
+          <input id="currentEmployer" data-field="currentEmployer" data-label="Current employer" type="text" required />
+        </div>
+        <div class="field">
+          <label for="cicdExperience">Describe your CI/CD platform ownership<span class="req">*</span></label>
+          <textarea id="cicdExperience" data-field="cicdExperience" data-label="CI/CD platform ownership"></textarea>
+        </div>
+        <div class="field">
+          <label for="noticePeriod">Notice period</label>
+          <select id="noticePeriod" data-field="noticePeriod" data-label="Notice period">
+            <option value=""></option>
+            <option value="Immediately">Immediately</option>
+            <option value="2 weeks">2 weeks</option>
+            <option value="4 weeks">4 weeks</option>
+            <option value="8 weeks or more">8 weeks or more</option>
+          </select>
+        </div>
+
+        <div class="notice notice--info">
+          This requisition has additional screening questions configured by the hiring team.
+        </div>
+
+        <div class="actions">
+          <button class="btn btn--ghost" data-action="back-experience" data-label="Back">Back</button>
+          <span class="spacer"></span>
+          <button class="btn btn--primary" data-action="next-experience" data-label="Continue to screening questions">
+            Continue to screening questions
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="card panel" data-panel="review" style="display: none">
+        <h2>Review and submit</h2>
+        <p class="meta">Confirm everything below before submitting. You cannot edit after submission.</p>
+        <div id="summary" style="font-size: 13px; line-height: 1.9"></div>
+        <div id="validation" class="notice notice--danger" style="display: none"></div>
+        <div class="actions">
+          <button class="btn btn--ghost" data-action="back-review" data-label="Back">Back</button>
+          <span class="spacer"></span>
+          <button class="btn btn--primary" data-action="submit" data-label="Submit application">
+            Submit application
+          </button>
+        </div>
+      </div>
+
+      <p class="fineprint">
+        Northwind Talent Suite is a fictional applicant tracking system built for this demo.
+      </p>
+    </div>
+
+    <div class="mock-flag">Simulated ATS</div>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      const company = params.get('co') || 'Halcyon Grid';
+      const role = params.get('role') || 'Staff DevSecOps Engineer';
+      const req = params.get('req') || 'HG-2210';
+      document.getElementById('company-name').textContent = company;
+      document.getElementById('role-title').textContent = role;
+      document.getElementById('req-id').textContent = 'Req #' + req;
+      document.getElementById('ctx').textContent = company;
+      document.title = role + ' — ' + company + ' · Northwind';
+
+      const ORDER = ['contact', 'resume', 'experience', 'review'];
+      const REQUIRED = {
+        contact: ['firstName', 'lastName', 'email', 'phone', 'city', 'state'],
+        resume: ['resume'],
+        experience: ['currentTitle', 'currentEmployer', 'cicdExperience'],
+        review: [],
+      };
+
+      function valueOf(name) {
+        const el = document.querySelector('[data-field="' + name + '"]');
+        if (!el) return '';
+        if (el.dataset.type === 'file') return el.dataset.value || '';
+        return (el.value || '').trim();
+      }
+
+      function currentStep() {
+        return document.body.dataset.pageStep;
+      }
+
+      function stepComplete(step) {
+        return REQUIRED[step].every((f) => valueOf(f) !== '');
+      }
+
+      function render() {
+        const step = currentStep();
+        document.querySelectorAll('.panel').forEach((p) => {
+          p.style.display = p.dataset.panel === step ? '' : 'none';
+        });
+        document.querySelectorAll('#steps .step').forEach((s) => {
+          const idx = ORDER.indexOf(s.dataset.step);
+          const cur = ORDER.indexOf(step);
+          s.className = 'step' + (idx === cur ? ' active' : idx < cur ? ' done' : '');
+        });
+        const box = document.querySelector('.filebox');
+        box.querySelector('.fname').textContent = box.dataset.value || 'No file attached';
+
+        document.body.dataset.pageStatus = stepComplete(step) ? 'step-complete' : 'editing';
+        document.body.dataset.flags = JSON.stringify({
+          stepIndex: String(ORDER.indexOf(step) + 1),
+          stepCount: String(ORDER.length),
+          screeningAnswered: params.get('screening') === 'answered' ? 'true' : 'false',
+        });
+
+        document.getElementById('summary').innerHTML = [
+          ['Name', valueOf('firstName') + ' ' + valueOf('lastName')],
+          ['Email', valueOf('email')],
+          ['Phone', valueOf('phone')],
+          ['Location', valueOf('city') + ', ' + valueOf('state')],
+          ['Resume', valueOf('resume') || '—'],
+          ['Current title', valueOf('currentTitle')],
+          ['Current employer', valueOf('currentEmployer')],
+          ['Notice period', valueOf('noticePeriod') || '—'],
+          ['Screening questions', params.get('screening') === 'answered' ? 'Answered' : 'Not answered'],
+        ]
+          .map((r) => '<div><strong style="display:inline-block;min-width:180px">' + r[0] + '</strong>' + (r[1] || '—') + '</div>')
+          .join('');
+      }
+
+      function go(step) {
+        document.body.dataset.pageStep = step;
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      document.addEventListener('input', render, true);
+      document.addEventListener('change', render, true);
+      document.addEventListener('mock:field', render, true);
+      new MutationObserver(render).observe(document.querySelector('.filebox'), {
+        attributes: true,
+        attributeFilter: ['data-value'],
+      });
+
+      document.querySelector('[data-action="choose-resume"]').addEventListener('click', () => {
+        const box = document.querySelector('.filebox');
+        box.dataset.value = box.dataset.value ? '' : 'resume.pdf';
+        render();
+      });
+
+      document.querySelector('[data-action="next-contact"]').addEventListener('click', () => go('resume'));
+      document.querySelector('[data-action="back-resume"]').addEventListener('click', () => go('contact'));
+      document.querySelector('[data-action="next-resume"]').addEventListener('click', () => go('experience'));
+      document.querySelector('[data-action="back-experience"]').addEventListener('click', () => go('resume'));
+      document.querySelector('[data-action="back-review"]').addEventListener('click', () => go('experience'));
+
+      document.querySelector('[data-action="next-experience"]').addEventListener('click', () => {
+        document.body.dataset.pageStatus = 'navigating-to-screening';
+        const q = new URLSearchParams({ co: company, role: role, req: req });
+        location.href = 'mock://application/unexpected-question?' + q.toString();
+      });
+
+      document.querySelector('[data-action="submit"]').addEventListener('click', () => {
+        const missing = ORDER.flatMap((s) => REQUIRED[s]).filter((f) => valueOf(f) === '');
+        const box = document.getElementById('validation');
+        if (missing.length) {
+          box.style.display = 'block';
+          box.textContent = 'Incomplete: ' + missing.join(', ');
+          document.body.dataset.pageStatus = 'validation-error';
+          return;
+        }
+        box.style.display = 'none';
+        document.body.dataset.pageStatus = 'submitting';
+        const q = new URLSearchParams({ co: company, role: role, req: req });
+        setTimeout(() => {
+          location.href = 'mock://application/submitted?' + q.toString();
+        }, 350);
+      });
+
+      // Returning from the screening-questions page lands directly on review.
+      if (params.get('step')) document.body.dataset.pageStep = params.get('step');
+      render();
+    </script>
+  </body>
+</html>

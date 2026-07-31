@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design tokens. Every colour in the app resolves through one of these so the
+ * light and dark themes stay in lockstep. `--ai` is deliberately a distinct hue
+ * from every "success" colour: AI-generated or inferred content must never be
+ * mistakable for user-verified content.
+ */
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 215 28% 17%;
+    --surface: 0 0% 100%;
+    --surface-2: 210 20% 94%;
+    --border: 214 20% 86%;
+    --input: 214 20% 82%;
+    --ring: 221 83% 53%;
+    --muted: 210 20% 94%;
+    --muted-foreground: 215 14% 42%;
+    --primary: 221 83% 47%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 262 72% 52%;
+    --accent-foreground: 0 0% 100%;
+    --ok: 152 62% 32%;
+    --ok-foreground: 0 0% 100%;
+    --warn: 33 92% 38%;
+    --warn-foreground: 0 0% 100%;
+    --danger: 0 72% 46%;
+    --danger-foreground: 0 0% 100%;
+    --info: 199 84% 36%;
+    --info-foreground: 0 0% 100%;
+    --ai: 288 60% 46%;
+  }
+
+  .dark {
+    --background: 222 24% 10%;
+    --foreground: 210 20% 92%;
+    --surface: 222 22% 13%;
+    --surface-2: 220 18% 19%;
+    --border: 218 16% 25%;
+    --input: 218 16% 30%;
+    --ring: 213 90% 62%;
+    --muted: 220 18% 19%;
+    --muted-foreground: 216 14% 65%;
+    --primary: 213 88% 58%;
+    --primary-foreground: 222 40% 8%;
+    --accent: 265 82% 70%;
+    --accent-foreground: 222 40% 8%;
+    --ok: 152 55% 48%;
+    --ok-foreground: 222 40% 8%;
+    --warn: 38 92% 56%;
+    --warn-foreground: 222 40% 8%;
+    --danger: 0 78% 63%;
+    --danger-foreground: 222 40% 8%;
+    --info: 199 85% 58%;
+    --info-foreground: 222 40% 8%;
+    --ai: 292 78% 70%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: Inter, 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+    /* The app is a desktop tool, not a document: nothing should be selectable
+       by accident while dragging split panes. Opt back in where it matters. */
+    user-select: none;
+    cursor: default;
+  }
+
+  input,
+  textarea,
+  select,
+  [data-selectable] {
+    user-select: text;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border: 2px solid transparent;
+    background-clip: content-box;
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.6);
+    background-clip: content-box;
+  }
+}
+
+@layer utilities {
+  .scrollable {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* Hairline used to separate dense table rows without adding visual weight. */
+  .row-hover:hover {
+    background: hsl(var(--surface-2) / 0.6);
+  }
+}

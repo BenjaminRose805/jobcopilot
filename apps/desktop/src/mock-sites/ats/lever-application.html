@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — Lattis</title>
+    <link rel="stylesheet" href="mock://static/css/base.css" />
+    <link rel="stylesheet" href="mock://static/css/vendors.css" />
+  </head>
+  <body
+    class="lattis"
+    data-mock-page="ats/lever-application"
+    data-page-step="application"
+    data-page-status="editing"
+    data-flags='{"compensationAnswered":"false"}'
+  >
+    <div class="topbar">
+      <span class="logo">Lattis</span>
+      <span style="flex: 1"></span>
+      <span class="meta" id="ctx">Verdance Labs</span>
+    </div>
+
+    <div class="wrap">
+      <div class="card">
+        <h1 id="role-title">AI Platform Engineer — Agent Infrastructure</h1>
+        <div class="meta-row">
+          <span id="company-name">Verdance Labs</span>
+          <span>Remote — US &amp; Canada</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="field">
+          <label for="name">Full name<span class="req">*</span></label>
+          <input id="name" data-field="name" data-label="Full name" type="text" required />
+        </div>
+        <div class="field">
+          <label for="email">Email<span class="req">*</span></label>
+          <input id="email" data-field="email" data-label="Email" type="email" required />
+        </div>
+        <div class="field">
+          <label for="phone">Phone<span class="req">*</span></label>
+          <input id="phone" data-field="phone" data-label="Phone" type="tel" required />
+        </div>
+        <div class="field">
+          <span class="field-label">Resume<span class="req">*</span></span>
+          <div class="filebox" data-field="resume" data-label="Resume" data-type="file" data-value="" data-required="true">
+            <button class="btn btn--ghost" type="button" data-action="choose-resume" data-label="Upload resume">
+              Upload resume
+            </button>
+            <span class="fname">No file</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="codeProfile">Code profile</label>
+          <input id="codeProfile" data-field="codeProfile" data-label="Code profile" type="url" />
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Additional information</h2>
+
+        <div class="field">
+          <label for="agentExperience"
+            >Tell us about agent or LLM orchestration work you have shipped<span class="req">*</span></label
+          >
+          <textarea id="agentExperience" data-field="agentExperience" data-label="Agent / LLM orchestration experience" required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="salaryExpectation">What are your base salary expectations?<span class="req">*</span></label>
+          <input
+            id="salaryExpectation"
+            data-field="salaryExpectation"
+            data-label="Base salary expectations"
+            type="text"
+            placeholder="e.g. $200,000"
+            required
+          />
+          <div class="hint">We ask everyone this up front so we do not waste your time.</div>
+        </div>
+
+        <div class="field">
+          <label for="workAuth">Do you now or will you in the future require visa sponsorship?<span class="req">*</span></label>
+          <select id="workAuth" data-field="workAuth" data-label="Sponsorship requirement" required>
+            <option value=""></option>
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="referralSource">How did you hear about us?</label>
+          <select id="referralSource" data-field="referralSource" data-label="Referral source">
+            <option value=""></option>
+            <option value="Company website">Company website</option>
+            <option value="Referral">Referral from an employee</option>
+            <option value="Conference">Conference or meetup</option>
+            <option value="Job board">Job board</option>
+          </select>
+        </div>
+
+        <div id="validation" class="notice notice--danger" style="display: none"></div>
+
+        <div class="actions">
+          <button class="btn btn--primary" data-action="submit" data-label="Submit application">
+            Submit application
+          </button>
+          <span class="spacer"></span>
+          <span class="meta" id="completion"></span>
+        </div>
+      </div>
+
+      <p class="fineprint">Lattis is a fictional applicant tracking system built for this demo.</p>
+    </div>
+
+    <div class="mock-flag">Simulated ATS</div>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      const company = params.get('co') || 'Verdance Labs';
+      const role = params.get('role') || 'AI Platform Engineer — Agent Infrastructure';
+      const req = params.get('req') || 'VL-118';
+      document.getElementById('company-name').textContent = company;
+      document.getElementById('role-title').textContent = role;
+      document.getElementById('ctx').textContent = company;
+      document.title = role + ' — ' + company + ' · Lattis';
+
+      const REQUIRED = ['name', 'email', 'phone', 'resume', 'agentExperience', 'salaryExpectation', 'workAuth'];
+
+      function valueOf(n) {
+        const el = document.querySelector('[data-field="' + n + '"]');
+        if (!el) return '';
+        if (el.dataset.type === 'file') return el.dataset.value || '';
+        return (el.value || '').trim();
+      }
+
+      function refresh() {
+        const done = REQUIRED.filter((f) => valueOf(f) !== '').length;
+        document.getElementById('completion').textContent = done + ' / ' + REQUIRED.length + ' required';
+        document.body.dataset.pageStatus = done === REQUIRED.length ? 'ready-to-submit' : 'editing';
+        document.body.dataset.flags = JSON.stringify({
+          compensationAnswered: valueOf('salaryExpectation') ? 'true' : 'false',
+        });
+        const box = document.querySelector('.filebox');
+        box.querySelector('.fname').textContent = box.dataset.value || 'No file';
+      }
+
+      document.addEventListener('input', refresh, true);
+      document.addEventListener('change', refresh, true);
+      document.addEventListener('mock:field', refresh, true);
+      new MutationObserver(refresh).observe(document.querySelector('.filebox'), {
+        attributes: true,
+        attributeFilter: ['data-value'],
+      });
+
+      document.querySelector('[data-action="choose-resume"]').addEventListener('click', () => {
+        const box = document.querySelector('.filebox');
+        box.dataset.value = box.dataset.value ? '' : 'resume.pdf';
+        refresh();
+      });
+
+      document.querySelector('[data-action="submit"]').addEventListener('click', () => {
+        const missing = REQUIRED.filter((f) => valueOf(f) === '');
+        const box = document.getElementById('validation');
+        if (missing.length) {
+          box.style.display = 'block';
+          box.textContent = 'Still required: ' + missing.join(', ');
+          document.body.dataset.pageStatus = 'validation-error';
+          return;
+        }
+        box.style.display = 'none';
+        document.body.dataset.pageStatus = 'submitting';
+        const q = new URLSearchParams({ co: company, role: role, req: req });
+        setTimeout(() => {
+          location.href = 'mock://application/demographics?' + q.toString();
+        }, 300);
+      });
+
+      refresh();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["packages/shared/src/*"],
+      "@shared": ["packages/shared/src/index.ts"],
+      "@career-model/*": ["packages/career-model/src/*"],
+      "@career-model": ["packages/career-model/src/index.ts"],
+      "@job-model/*": ["packages/job-model/src/*"],
+      "@job-model": ["packages/job-model/src/index.ts"],
+      "@scoring/*": ["packages/scoring/src/*"],
+      "@scoring": ["packages/scoring/src/index.ts"],
+      "@scenario-engine/*": ["packages/scenario-engine/src/*"],
+      "@scenario-engine": ["packages/scenario-engine/src/index.ts"],
+      "@ui/*": ["packages/ui/src/*"],
+      "@ui": ["packages/ui/src/index.ts"],
+      "@app/*": ["apps/desktop/src/*"]
+    }
+  },
+  "include": [
+    "apps/desktop/src/**/*.ts",
+    "apps/desktop/src/**/*.tsx",
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "*.ts"
+  ],
+  "exclude": ["node_modules", ".vite", "out"]
+}

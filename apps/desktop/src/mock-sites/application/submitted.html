@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Application received</title>
+    <link rel="stylesheet" href="mock://static/css/base.css" />
+    <link rel="stylesheet" href="mock://static/css/vendors.css" />
+  </head>
+  <body
+    class="brightgate"
+    data-mock-page="application/submitted"
+    data-page-step="confirmation"
+    data-page-status="submitted"
+    data-flags='{"confirmationVisible":"true"}'
+  >
+    <div class="topbar">
+      <span class="logo">brightgate<span>·hiring</span></span>
+      <span class="meta" id="ctx">Confirmation</span>
+      <span style="flex: 1"></span>
+      <span class="meta">Powered by Brightgate</span>
+    </div>
+
+    <div class="wrap">
+      <div class="center-box">
+        <div class="card" style="max-width: 620px">
+          <div class="confirm-mark">✓</div>
+          <h1 style="font-size: 22px; margin-bottom: 6px">Application received</h1>
+          <p class="meta" id="summary-line">
+            Your application has been submitted.
+          </p>
+
+          <div class="confirm-block">
+            <div><strong style="display: inline-block; min-width: 160px">Role</strong><span id="role-title">Security Platform Engineer</span></div>
+            <div><strong style="display: inline-block; min-width: 160px">Company</strong><span id="company-name">Meridian Compute</span></div>
+            <div><strong style="display: inline-block; min-width: 160px">Requisition</strong><span id="req-id">MC-4471</span></div>
+            <div><strong style="display: inline-block; min-width: 160px">Confirmation number</strong><span id="confirmation" data-field="confirmationNumber" data-label="Confirmation number">—</span></div>
+            <div><strong style="display: inline-block; min-width: 160px">Received</strong><span id="received">—</span></div>
+          </div>
+
+          <div class="notice notice--info" style="margin-top: 16px">
+            The hiring team typically responds within 10 business days. You will receive updates at
+            the email address on your application.
+          </div>
+
+          <div class="actions" style="border: none">
+            <span class="spacer"></span>
+            <button class="btn btn--ghost" data-action="print" data-label="Print confirmation">
+              Print confirmation
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <p class="fineprint">
+        Nothing was submitted anywhere. This confirmation page is part of a local simulation.
+      </p>
+    </div>
+
+    <div class="mock-flag">Simulated confirmation</div>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      const company = params.get('co') || 'Meridian Compute';
+      const role = params.get('role') || 'Security Platform Engineer';
+      const req = params.get('req') || 'MC-4471';
+
+      document.getElementById('company-name').textContent = company;
+      document.getElementById('role-title').textContent = role;
+      document.getElementById('req-id').textContent = req;
+      document.getElementById('ctx').textContent = company + ' · Confirmation';
+      document.getElementById('summary-line').textContent =
+        'Your application for ' + role + ' at ' + company + ' has been received.';
+      document.title = 'Application received — ' + company;
+
+      // Deterministic confirmation number derived from the requisition, so the
+      // scenario engine can assert on it without depending on wall-clock time.
+      function hash(s) {
+        let h = 0;
+        for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+        return h;
+      }
+      const confirmation = req.replace(/[^A-Za-z0-9]/g, '').toUpperCase() + '-' + (hash(req + role) % 900000 + 100000);
+      document.getElementById('confirmation').textContent = confirmation;
+      document.getElementById('received').textContent = new Date().toLocaleString();
+
+      document.body.dataset.flags = JSON.stringify({
+        confirmationVisible: 'true',
+        confirmationNumber: confirmation,
+      });
+
+      document.querySelector('[data-action="print"]').addEventListener('click', () => {
+        document.body.dataset.pageStatus = 'print-simulated';
+        setTimeout(() => {
+          document.body.dataset.pageStatus = 'submitted';
+        }, 500);
+      });
+    </script>
+  </body>
+</html>

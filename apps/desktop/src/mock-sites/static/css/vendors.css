@@ -1,0 +1,261 @@
+/* Distinct visual identities for three fictional ATS vendors so the embedded
+   browser feels like it is moving between different real products.
+   All names, colours and marks are invented for this demo. */
+
+/* ---------------------------------------------------------------- Brightgate
+   Single-page, airy, green accent. */
+.brightgate {
+  background: #fbfbfa;
+}
+
+.brightgate .topbar {
+  background: #fff;
+  border-bottom: 1px solid #e6e6e2;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brightgate .logo {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: 15px;
+  color: #14795c;
+}
+
+.brightgate .logo span {
+  color: #2c3230;
+}
+
+.brightgate .btn--primary {
+  background: #14795c;
+  color: #fff;
+}
+
+.brightgate .card {
+  border-color: #e6e6e2;
+  border-radius: 6px;
+}
+
+.brightgate input:focus,
+.brightgate textarea:focus,
+.brightgate select:focus {
+  outline-color: #14795c;
+  border-color: #14795c;
+}
+
+/* ----------------------------------------------------------------- Northwind
+   Enterprise multi-step wizard, navy chrome, dense. */
+.northwind {
+  background: #eef1f6;
+  font-family: 'Segoe UI', Tahoma, system-ui, sans-serif;
+}
+
+.northwind .topbar {
+  background: #1f3d7a;
+  color: #fff;
+  padding: 10px 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.northwind .logo {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+
+.northwind .topbar .sub {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.northwind .card {
+  border-radius: 3px;
+  border-color: #ccd4e2;
+  box-shadow: 0 1px 2px rgba(31, 61, 122, 0.07);
+}
+
+.northwind h1 {
+  font-size: 19px;
+  color: #1f3d7a;
+}
+
+.northwind .btn--primary {
+  background: #1f3d7a;
+  color: #fff;
+  border-radius: 3px;
+}
+
+.northwind .btn {
+  border-radius: 3px;
+}
+
+.northwind .field > label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #4a5570;
+}
+
+/* -------------------------------------------------------------------- Lattis
+   Minimal, typographic, violet accent. */
+.lattis {
+  background: #fff;
+  font-family: 'Helvetica Neue', Arial, system-ui, sans-serif;
+}
+
+.lattis .topbar {
+  border-bottom: 1px solid #ece9f5;
+  padding: 16px 26px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lattis .logo {
+  font-weight: 300;
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #5a3fc0;
+}
+
+.lattis .card {
+  border: none;
+  border-bottom: 1px solid #ece9f5;
+  border-radius: 0;
+  padding: 24px 0;
+  margin-bottom: 0;
+}
+
+.lattis .wrap {
+  max-width: 680px;
+}
+
+.lattis h1 {
+  font-weight: 400;
+  font-size: 27px;
+}
+
+.lattis .btn--primary {
+  background: #5a3fc0;
+  color: #fff;
+  border-radius: 2px;
+  padding: 10px 26px;
+}
+
+.lattis input,
+.lattis textarea,
+.lattis select {
+  border-radius: 2px;
+  border-color: #ded9ee;
+}
+
+.lattis input:focus,
+.lattis textarea:focus,
+.lattis select:focus {
+  outline-color: #5a3fc0;
+  border-color: #5a3fc0;
+}
+
+/* --------------------------------------------------- Fictional employer sites */
+.employer .hero {
+  background: linear-gradient(180deg, #10233f 0%, #16304f 100%);
+  color: #eaf0f8;
+  padding: 34px 24px 30px;
+}
+
+.employer .hero .wrap {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.employer .hero h1 {
+  color: #fff;
+  font-size: 27px;
+}
+
+.employer .hero .meta-row {
+  color: #9db4d4;
+}
+
+.employer .hero .pill {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #cfe0f5;
+}
+
+.employer .brandbar {
+  background: #0b1728;
+  color: #dbe6f5;
+  padding: 11px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.employer .brandbar .logo {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.employer .btn--primary {
+  background: #2f6df6;
+  color: #fff;
+}
+
+.employer .verified {
+  font-size: 11px;
+  color: #6fd39b;
+  border: 1px solid rgba(111, 211, 155, 0.4);
+  border-radius: 3px;
+  padding: 1px 7px;
+}
+
+/* ---------------------------------------------------------------- Challenges */
+.challenge-box {
+  border: 1px solid #d8dce5;
+  border-radius: 8px;
+  padding: 20px;
+  background: #fff;
+  text-align: center;
+}
+
+.challenge-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 16px 0;
+}
+
+.challenge-tile {
+  aspect-ratio: 1;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #dfe4ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  user-select: none;
+}
+
+.challenge-tile.picked {
+  border-color: #2f6df6;
+  background: #d8e5ff;
+}
+
+.robot-note {
+  font-size: 12px;
+  color: #a04b3c;
+  background: #fdf0ee;
+  border: 1px solid #f0cdc6;
+  border-radius: 5px;
+  padding: 8px 12px;
+  margin-top: 12px;
+}

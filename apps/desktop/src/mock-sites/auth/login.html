@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sign in — Northlake Careers</title>
+    <link rel="stylesheet" href="mock://static/css/base.css" />
+    <link rel="stylesheet" href="mock://static/css/vendors.css" />
+  </head>
+  <body
+    class="northwind"
+    data-mock-page="auth/login"
+    data-page-step="credentials"
+    data-page-status="awaiting-credentials"
+    data-requires-human="true"
+    data-requires-human-reason="Account credentials must be entered by the account owner. The agent never handles passwords."
+    data-flags='{"authenticated":"false"}'
+  >
+    <div class="topbar">
+      <span class="logo">NORTHLAKE</span>
+      <span class="sub">Candidate portal</span>
+    </div>
+
+    <div class="wrap">
+      <div class="center-box">
+        <div class="card">
+          <h1 style="font-size: 20px">Sign in to continue</h1>
+          <p class="meta">You need a candidate account to apply to Northlake requisitions.</p>
+
+          <div class="notice">
+            <strong>Human required.</strong> JobCopilot will never type credentials for you. Sign in
+            yourself, then hand control back to the agent.
+          </div>
+
+          <div class="field">
+            <label for="username">Email</label>
+            <input id="username" data-field="username" data-label="Email" type="email" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" data-field="password" data-label="Password" type="password" autocomplete="off" />
+          </div>
+
+          <div id="err" class="notice notice--danger" style="display: none"></div>
+
+          <div class="actions" style="border: none; padding-top: 6px">
+            <button class="btn btn--primary" data-action="signin" data-label="Sign in" style="width: 100%">
+              Sign in
+            </button>
+          </div>
+          <p class="hint" style="text-align: center; margin-top: 14px">
+            Demo shortcut: any email plus any password of 4+ characters is accepted. Nothing is
+            stored or transmitted.
+          </p>
+        </div>
+      </div>
+      <p class="fineprint">Simulated login page. No credential is ever read, kept or sent anywhere.</p>
+    </div>
+
+    <div class="mock-flag">Simulated login</div>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      document.querySelector('[data-action="signin"]').addEventListener('click', () => {
+        const u = document.getElementById('username').value.trim();
+        const p = document.getElementById('password').value;
+        const err = document.getElementById('err');
+        if (!u || p.length < 4) {
+          err.style.display = 'block';
+          err.textContent = 'Enter an email and a password of at least 4 characters.';
+          document.body.dataset.pageStatus = 'credentials-invalid';
+          return;
+        }
+        err.style.display = 'none';
+        document.body.dataset.pageStatus = 'authenticated';
+        document.body.dataset.requiresHuman = 'false';
+        document.body.dataset.flags = JSON.stringify({ authenticated: 'true' });
+        // Immediately clear the password field — nothing is retained.
+        document.getElementById('password').value = '';
+        const q = new URLSearchParams({
+          co: params.get('co') || 'Northlake Systems',
+          role: params.get('role') || 'Cloud Security Engineer II',
+          req: params.get('req') || 'NL-8802',
+        });
+        setTimeout(() => {
+          location.href = 'mock://challenge/captcha?' + q.toString();
+        }, 400);
+      });
+    </script>
+  </body>
+</html>

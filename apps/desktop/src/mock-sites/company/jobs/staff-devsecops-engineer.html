@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Staff DevSecOps Engineer — Halcyon Grid</title>
+    <link rel="stylesheet" href="mock://static/css/base.css" />
+    <link rel="stylesheet" href="mock://static/css/vendors.css" />
+  </head>
+  <body
+    class="employer"
+    data-mock-page="company/jobs/staff-devsecops-engineer"
+    data-page-step="posting"
+    data-page-status="viewing"
+    data-flags='{"employerVerified":"true"}'
+  >
+    <div class="brandbar">
+      <span class="logo">HALCYON GRID</span>
+      <span>Open roles</span>
+      <span style="flex: 1"></span>
+      <span class="verified">Official careers page</span>
+    </div>
+
+    <div class="hero">
+      <div class="wrap wrap--wide">
+        <h1>Staff DevSecOps Engineer</h1>
+        <div class="meta-row">
+          <span>Developer Platform</span>
+          <span>Hybrid — Denver, CO (2 days on-site)</span>
+          <span>$195,000 – $240,000</span>
+          <span>Posted 6 days ago</span>
+        </div>
+        <div class="meta-row" style="margin-top: 10px">
+          <span class="pill">Full-time</span>
+          <span class="pill">Staff</span>
+          <span class="pill">Hybrid</span>
+          <span class="pill">Req #HG-2210</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap wrap--wide">
+      <div class="card">
+        <h2>The role</h2>
+        <p>
+          Halcyon Grid operates grid-scale energy analytics. The Developer Platform group is hiring a
+          staff engineer to own how security controls reach 40 product teams without slowing them
+          down.
+        </p>
+
+        <h3>Responsibilities</h3>
+        <ul>
+          <li>Own the shared CI/CD platform and its release-gating policy.</li>
+          <li>Drive language and dependency migrations across a large polyglot estate.</li>
+          <li>Run the vulnerability-remediation programme as an engineering product, not a report.</li>
+          <li>Mentor engineers across the org on secure delivery practice.</li>
+        </ul>
+
+        <h3>Required qualifications</h3>
+        <ul>
+          <li>8+ years of software engineering, including 3+ on developer platform or infra.</li>
+          <li>Deep CI/CD pipeline ownership at scale.</li>
+          <li>Demonstrated experience running large dependency or runtime migrations.</li>
+          <li>Production experience operating Kubernetes clusters.</li>
+          <li>Terraform and cloud infrastructure fluency.</li>
+        </ul>
+
+        <h3>Preferred</h3>
+        <ul>
+          <li>Experience with static/dynamic scanning tools and triage automation.</li>
+          <li>Background in regulated or safety-critical environments.</li>
+        </ul>
+
+        <div class="actions">
+          <button class="btn btn--primary" data-action="apply" data-label="Start application">
+            Start application
+          </button>
+          <span class="spacer"></span>
+          <span class="meta">Applications reviewed on a rolling basis</span>
+        </div>
+      </div>
+      <p class="fineprint">Halcyon Grid is a fictional company. Bundled demo fixture.</p>
+    </div>
+
+    <div class="mock-flag">Simulated employer site</div>
+
+    <script>
+      document.querySelector('[data-action="apply"]').addEventListener('click', () => {
+        document.body.dataset.pageStatus = 'navigating-to-ats';
+        location.href = 'mock://ats/multistep-application';
+      });
+    </script>
+  </body>
+</html>

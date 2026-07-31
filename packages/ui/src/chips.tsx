@@ -1,0 +1,192 @@
+import React from 'react';
+import {
+  AlertTriangle,
+  Bot,
+  CheckCircle2,
+  CircleHelp,
+  FlaskConical,
+  Hand,
+  Lock,
+  Pause,
+  ShieldCheck,
+  Sparkles,
+  UserCheck,
+} from 'lucide-react';
+import {
+  AUTOMATION_MODE_LABEL,
+  VERIFICATION_LABEL,
+  type AutomationMode,
+  type ConfidenceLevel,
+  type ControlOwner,
+  type VerificationStatus,
+} from '@shared/common';
+import { RECOMMENDATION_LABEL, type JobRecommendation } from '@job-model';
+import { APPLICATION_STATUS_LABEL, type ApplicationStatus } from '@shared/application';
+import { Badge, type BadgeTone } from './primitives';
+import { cn } from './cn';
+
+const CONFIDENCE_TONE: Record<ConfidenceLevel, BadgeTone> = {
+  high: 'ok',
+  medium: 'info',
+  low: 'warn',
+  unsupported: 'danger',
+};
+
+const CONFIDENCE_LABEL: Record<ConfidenceLevel, string> = {
+  high: 'High confidence',
+  medium: 'Medium confidence',
+  low: 'Low confidence',
+  unsupported: 'Unsupported',
+};
+
+export function ConfidenceChip({
+  level,
+  compact,
+}: {
+  level: ConfidenceLevel;
+  compact?: boolean;
+}) {
+  return (
+    <Badge tone={CONFIDENCE_TONE[level]} title={CONFIDENCE_LABEL[level]}>
+      {level === 'unsupported' ? <AlertTriangle size={10} /> : <ShieldCheck size={10} />}
+      {compact ? level : CONFIDENCE_LABEL[level]}
+    </Badge>
+  );
+}
+
+const VERIFICATION_TONE: Record<VerificationStatus, BadgeTone> = {
+  'user-verified': 'ok',
+  imported: 'info',
+  'ai-inferred': 'ai',
+  'needs-confirmation': 'warn',
+  conflicting: 'danger',
+  archived: 'muted',
+};
+
+export function VerificationChip({ status }: { status: VerificationStatus }) {
+  const Icon =
+    status === 'user-verified'
+      ? UserCheck
+      : status === 'ai-inferred'
+        ? Sparkles
+        : status === 'conflicting'
+          ? AlertTriangle
+          : status === 'needs-confirmation'
+            ? CircleHelp
+            : CheckCircle2;
+  return (
+    <Badge tone={VERIFICATION_TONE[status]} title={VERIFICATION_LABEL[status]}>
+      <Icon size={10} />
+      {VERIFICATION_LABEL[status]}
+    </Badge>
+  );
+}
+
+const RECOMMENDATION_TONE: Record<JobRecommendation, BadgeTone> = {
+  'priority-apply': 'ok',
+  apply: 'info',
+  'apply-with-referral': 'accent',
+  stretch: 'warn',
+  'low-value': 'muted',
+  'do-not-apply': 'danger',
+};
+
+export function RecommendationChip({ value }: { value: JobRecommendation }) {
+  return <Badge tone={RECOMMENDATION_TONE[value]}>{RECOMMENDATION_LABEL[value]}</Badge>;
+}
+
+const STATUS_TONE: Record<ApplicationStatus, BadgeTone> = {
+  discovered: 'muted',
+  researching: 'info',
+  shortlisted: 'info',
+  preparing: 'accent',
+  'awaiting-approval': 'warn',
+  'waiting-for-user': 'warn',
+  submitted: 'ok',
+  acknowledged: 'ok',
+  'recruiter-response': 'ok',
+  screening: 'ok',
+  interviewing: 'ok',
+  offer: 'ok',
+  rejected: 'danger',
+  withdrawn: 'muted',
+  stale: 'muted',
+};
+
+export function ApplicationStatusChip({ status }: { status: ApplicationStatus }) {
+  return <Badge tone={STATUS_TONE[status]}>{APPLICATION_STATUS_LABEL[status]}</Badge>;
+}
+
+const MODE_STYLE: Record<AutomationMode, { tone: BadgeTone; Icon: typeof Bot }> = {
+  manual: { tone: 'muted', Icon: Hand },
+  assisted: { tone: 'info', Icon: Sparkles },
+  'agent-running': { tone: 'accent', Icon: Bot },
+  'waiting-for-approval': { tone: 'warn', Icon: CircleHelp },
+  'human-takeover': { tone: 'warn', Icon: Hand },
+  paused: { tone: 'muted', Icon: Pause },
+  completed: { tone: 'ok', Icon: CheckCircle2 },
+};
+
+export function AutomationModeChip({ mode }: { mode: AutomationMode }) {
+  const { tone, Icon } = MODE_STYLE[mode];
+  return (
+    <Badge tone={tone} className="px-2 py-[3px] text-xs">
+      <Icon size={12} className={mode === 'agent-running' ? 'animate-pulse' : undefined} />
+      {AUTOMATION_MODE_LABEL[mode]}
+    </Badge>
+  );
+}
+
+export function ControlOwnerChip({ owner }: { owner: ControlOwner }) {
+  const map: Record<ControlOwner, { tone: BadgeTone; label: string; Icon: typeof Bot }> = {
+    agent: { tone: 'accent', label: 'Agent has control', Icon: Bot },
+    user: { tone: 'warn', label: 'You have control', Icon: Hand },
+    'waiting-for-approval': { tone: 'warn', label: 'Waiting for you', Icon: CircleHelp },
+  };
+  const { tone, label, Icon } = map[owner];
+  return (
+    <Badge tone={tone} className="px-2 py-[3px] text-xs">
+      <Icon size={12} />
+      {label}
+    </Badge>
+  );
+}
+
+/** Marks anything that could otherwise be mistaken for real production data. */
+export function SimulatedBadge({ className }: { className?: string }) {
+  return (
+    <Badge tone="ai" className={cn('uppercase tracking-wide', className)} title="No real data. Nothing here touches a live system.">
+      <FlaskConical size={10} />
+      Simulated
+    </Badge>
+  );
+}
+
+export function AiSuggestedBadge({ label = 'AI suggested' }: { label?: string }) {
+  return (
+    <Badge tone="ai" title="Generated by the assistant. Not verified by you.">
+      <Sparkles size={10} />
+      {label}
+    </Badge>
+  );
+}
+
+export function LockedBadge({ reason }: { reason: string }) {
+  return (
+    <Badge tone="danger" title={reason}>
+      <Lock size={10} />
+      Always on
+    </Badge>
+  );
+}
+
+export function SimulatedNotice({ children }: { children?: React.ReactNode }) {
+  return (
+    <div className="flex items-start gap-2 rounded border border-dashed border-[hsl(var(--ai)/0.5)] bg-[hsl(var(--ai)/0.07)] px-2.5 py-1.5 text-xs text-muted-foreground">
+      <FlaskConical size={13} className="mt-[1px] shrink-0 text-[hsl(var(--ai))]" />
+      <span>
+        {children ?? 'Simulated data. This screen never reads from or writes to a real system.'}
+      </span>
+    </div>
+  );
+}

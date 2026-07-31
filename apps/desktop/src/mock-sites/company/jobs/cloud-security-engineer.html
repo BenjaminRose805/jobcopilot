@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Cloud Security Engineer — Northlake Systems</title>
+    <link rel="stylesheet" href="mock://static/css/base.css" />
+    <link rel="stylesheet" href="mock://static/css/vendors.css" />
+  </head>
+  <body
+    class="employer"
+    data-mock-page="company/jobs/cloud-security-engineer"
+    data-page-step="posting"
+    data-page-status="viewing"
+    data-flags='{"employerVerified":"true","requiresAccount":"true"}'
+  >
+    <div class="brandbar">
+      <span class="logo">NORTHLAKE SYSTEMS</span>
+      <span>Careers portal</span>
+      <span style="flex: 1"></span>
+      <span class="verified">Official careers page</span>
+    </div>
+
+    <div class="hero">
+      <div class="wrap wrap--wide">
+        <h1>Cloud Security Engineer II</h1>
+        <div class="meta-row">
+          <span>Cloud Security Engineering</span>
+          <span>Hybrid — Seattle, WA</span>
+          <span>$170,000 – $205,000</span>
+          <span>Posted 9 days ago</span>
+        </div>
+        <div class="meta-row" style="margin-top: 10px">
+          <span class="pill">Full-time</span>
+          <span class="pill">Senior</span>
+          <span class="pill">Hybrid</span>
+          <span class="pill">Account required to apply</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap wrap--wide">
+      <div class="card">
+        <div class="notice notice--info">
+          Northlake requires a candidate account before an application can be started.
+        </div>
+
+        <h2>Role summary</h2>
+        <p>
+          Secure the multi-account cloud estate behind Northlake's logistics products: guardrails,
+          identity boundaries, detection engineering and automated remediation.
+        </p>
+
+        <h3>Required</h3>
+        <ul>
+          <li>4+ years in cloud security or cloud infrastructure engineering.</li>
+          <li>Terraform-based guardrail authoring.</li>
+          <li>Vulnerability management across cloud workloads.</li>
+          <li>Python automation.</li>
+        </ul>
+
+        <h3>Preferred</h3>
+        <ul>
+          <li>Detection engineering experience.</li>
+          <li>Experience in a regulated industry.</li>
+        </ul>
+
+        <div class="actions">
+          <button class="btn btn--primary" data-action="apply" data-label="Sign in and apply">
+            Sign in and apply
+          </button>
+          <span class="spacer"></span>
+          <span class="meta">Req #NL-8802</span>
+        </div>
+      </div>
+      <p class="fineprint">Northlake Systems is a fictional company. Bundled demo fixture.</p>
+    </div>
+
+    <div class="mock-flag">Simulated employer site</div>
+
+    <script>
+      document.querySelector('[data-action="apply"]').addEventListener('click', () => {
+        document.body.dataset.pageStatus = 'navigating-to-auth';
+        location.href = 'mock://auth/login';
+      });
+    </script>
+  </body>
+</html>

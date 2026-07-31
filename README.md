@@ -22,14 +22,14 @@ Pre-built installers for every tagged release are attached to the [GitHub Releas
 | Platform | File |
 | --- | --- |
 | Windows | `JobCopilot-Setup-*-win-x64.exe` (installer) or `JobCopilot-*-win-x64.zip` (portable) |
-| macOS — Intel + Apple Silicon (universal) | `JobCopilot-*-mac-universal.dmg` |
+| macOS — Apple Silicon (Intel Macs can run via Rosetta 2) | `JobCopilot-*-mac-arm64.dmg` |
 | Linux — Debian / Ubuntu | `JobCopilot-*-linux-x64.deb` |
 | Linux — Fedora / RHEL | `JobCopilot-*-linux-x64.rpm` |
 | Linux — portable | `JobCopilot-*-linux-x64.zip` |
 
 These builds are **unsigned**. Windows SmartScreen shows a one-time warning — click *More info* → *Run anyway*. On macOS, right-click the app → **Open** the first time to bypass Gatekeeper.
 
-Builds are produced by [`.github/workflows/release.yml`](.github/workflows/release.yml) on every `v*.*.*` tag push, running the full `verify` gate on Windows, macOS (universal) and Linux runners in parallel.
+Builds are produced by [`.github/workflows/release.yml`](.github/workflows/release.yml) on every `v*.*.*` tag push, running the full `verify` gate on Windows, macOS (arm64) and Linux runners in parallel.
 
 ---
 

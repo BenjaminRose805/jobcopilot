@@ -30,9 +30,9 @@ jobs:
               out/make/**/*.nupkg
               out/make/**/RELEASES
               out/make/zip/**/*.zip
-          - name: macOS (Universal)
+          - name: macOS (Apple Silicon)
             os: macos-latest
-            forge_args: '--arch=universal'
+            forge_args: '--arch=arm64'
             artifact_glob: |
               out/make/**/*.dmg
               out/make/zip/**/*.zip
@@ -51,7 +51,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install Linux packaging tools
@@ -135,12 +135,12 @@ jobs:
             cp "$f" "release/JobCopilot-${VERSION}-win-x64.zip"
           done
 
-          # macOS universal (runs on both Intel and Apple Silicon)
+          # macOS Apple Silicon (Intel users can run via Rosetta 2)
           for f in $(find dist -path "*macos-latest*" -type f -name "*.dmg"); do
-            cp "$f" "release/JobCopilot-${VERSION}-mac-universal.dmg"
+            cp "$f" "release/JobCopilot-${VERSION}-mac-arm64.dmg"
           done
           for f in $(find dist -path "*macos-latest*" -type f -name "*.zip"); do
-            cp "$f" "release/JobCopilot-${VERSION}-mac-universal.zip"
+            cp "$f" "release/JobCopilot-${VERSION}-mac-arm64.zip"
           done
 
           # Linux
@@ -175,7 +175,7 @@ jobs:
             |---|---|
             | Windows (installer) | `JobCopilot-Setup-*-win-x64.exe` |
             | Windows (portable ZIP) | `JobCopilot-*-win-x64.zip` |
-            | macOS (Intel + Apple Silicon, universal) | `JobCopilot-*-mac-universal.dmg` |
+            | macOS (Apple Silicon; Intel via Rosetta 2) | `JobCopilot-*-mac-arm64.dmg` |
             | Linux (Debian/Ubuntu) | `JobCopilot-*-linux-x64.deb` |
             | Linux (Fedora/RHEL) | `JobCopilot-*-linux-x64.rpm` |
             | Linux (portable ZIP) | `JobCopilot-*-linux-x64.zip` |

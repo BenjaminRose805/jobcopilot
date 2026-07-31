@@ -52,10 +52,12 @@ const BOARD_COLUMNS: ApplicationStatus[] = [
 ];
 
 export function ApplicationsCrm() {
-  const { state, update } = useStore();
+  const { state, update, screenshot } = useStore();
   const { params, go } = useNav();
 
-  const [view, setView] = React.useState<'board' | 'table'>('board');
+  const [view, setView] = React.useState<'board' | 'table'>(
+    screenshot?.open === 'crm-table' ? 'table' : 'board',
+  );
   const [query, setQuery] = React.useState('');
   const [selectedId, setSelectedId] = React.useState<string | undefined>(params.applicationId);
 

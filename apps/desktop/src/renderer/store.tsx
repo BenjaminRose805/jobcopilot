@@ -1,5 +1,5 @@
 import React from 'react';
-import type { AppInfo } from '@shared/ipc';
+import type { AppInfo, ScreenshotOptions } from '@shared/ipc';
 import type { AppState } from '@shared/state';
 
 /* ------------------------------------------------------------------ *
@@ -19,6 +19,8 @@ interface StoreValue {
   info: AppInfo | null;
   savedAt: string | null;
   saving: boolean;
+  /** Documentation-capture overrides; `null` outside a dev screenshot run. */
+  screenshot: ScreenshotOptions | null;
 }
 
 const StoreContext = React.createContext<StoreValue | null>(null);
@@ -28,6 +30,7 @@ const SAVE_DEBOUNCE_MS = 400;
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = React.useState<AppState | null>(null);
   const [info, setInfo] = React.useState<AppInfo | null>(null);
+  const [screenshot, setScreenshot] = React.useState<ScreenshotOptions | null>(null);
   const [savedAt, setSavedAt] = React.useState<string | null>(null);
   const [saving, setSaving] = React.useState(false);
 
@@ -39,14 +42,18 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     let cancelled = false;
     void (async () => {
-      const [loaded, appInfo] = await Promise.all([
+      const [loaded, appInfo, shot] = await Promise.all([
         window.jobcopilot.state.load(),
         window.jobcopilot.app.info(),
+        window.jobcopilot.app.screenshotOptions(),
       ]);
       if (cancelled) return;
       skipNextSave.current = true;
-      setState(loaded);
+      // Applied to the in-memory copy only: the theme override exists to
+      // photograph a screen, not to rewrite the user's saved preference.
+      setState(shot?.theme ? { ...loaded, ui: { ...loaded.ui, theme: shot.theme } } : loaded);
       setInfo(appInfo);
+      setScreenshot(shot);
       setSavedAt(loaded.savedAt);
     })();
     return () => {
@@ -91,8 +98,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const value = React.useMemo<StoreValue | null>(
-    () => (state ? { state, update, reset, info, savedAt, saving } : null),
-    [state, update, reset, info, savedAt, saving],
+    () => (state ? { state, update, reset, info, savedAt, saving, screenshot } : null),
+    [state, update, reset, info, savedAt, saving, screenshot],
   );
 
   if (!value) {

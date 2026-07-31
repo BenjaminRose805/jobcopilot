@@ -69,15 +69,17 @@ const NavContext = React.createContext<NavValue | null>(null);
 
 export function NavProvider({
   initialScreen,
+  initialParams,
   children,
   onScreenChange,
 }: {
   initialScreen: ScreenId;
+  initialParams?: NavParams;
   children: React.ReactNode;
   onScreenChange?: (screen: ScreenId) => void;
 }) {
   const [stack, setStack] = React.useState<{ screen: ScreenId; params: NavParams }[]>([
-    { screen: initialScreen, params: {} },
+    { screen: initialScreen, params: initialParams ?? {} },
   ]);
 
   const current = stack[stack.length - 1];

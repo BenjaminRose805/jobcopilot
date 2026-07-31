@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron';
 import path from 'node:path';
 import startedViaSquirrel from 'electron-squirrel-startup';
 import { IPC, type BrowserCommand, type Rect } from '@shared/ipc';
@@ -11,6 +11,7 @@ import {
   registerMockScheme,
 } from './mock-protocol';
 import { buildSeedState } from '../data/seed';
+import { screenshotOptions } from './screenshot-mode';
 
 // Squirrel installer hooks (Windows). Exits early during install/uninstall.
 if (startedViaSquirrel) app.quit();
@@ -29,11 +30,20 @@ function send(channel: string, payload: unknown): void {
 }
 
 function createWindow(): void {
+  const shot = screenshotOptions();
+
+  // Electron's stock File/Edit/View menu is not part of the product's design
+  // and only adds a strip of unrelated chrome to a documentation capture.
+  if (shot) Menu.setApplicationMenu(null);
+
   mainWindow = new BrowserWindow({
-    width: 1600,
-    height: 980,
+    width: shot?.windowSize?.width ?? 1600,
+    height: shot?.windowSize?.height ?? 980,
     minWidth: 1180,
     minHeight: 700,
+    // Captures need the requested figure to be the pixel size of the app
+    // itself, not of the app plus whatever frame the host draws around it.
+    useContentSize: Boolean(shot?.windowSize),
     backgroundColor: '#0d0f14',
     show: false,
     title: 'JobCopilot',
@@ -137,6 +147,8 @@ function registerIpc(): void {
     userDataPath: app.getPath('userData'),
     statePath: store.path,
   }));
+
+  ipcMain.handle(IPC.appScreenshotOptions, () => screenshotOptions());
 }
 
 /* -------------------------------- lifecycle ------------------------------ */

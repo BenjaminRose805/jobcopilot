@@ -10,7 +10,7 @@ import { AnalyticsScreen } from '@app/features/analytics/AnalyticsScreen';
 import { AutonomySettings } from '@app/features/autonomy/AutonomySettings';
 import { ApplicationWorkspace } from '@app/features/workspace/ApplicationWorkspace';
 import { AgentProvider } from './agent';
-import { NavProvider, useNav, type ScreenId } from './nav';
+import { NavProvider, useNav, type NavParams, type ScreenId } from './nav';
 import { StoreProvider, useStore } from './store';
 
 const SCREENS: Record<ScreenId, React.ComponentType> = {
@@ -34,10 +34,15 @@ export function App() {
 }
 
 function Inner() {
-  const { state, update } = useStore();
+  const { state, update, screenshot } = useStore();
   const initialScreen = React.useRef<ScreenId>(
-    (state.ui.lastScreen as ScreenId) in SCREENS ? (state.ui.lastScreen as ScreenId) : 'command-center',
+    screenshot?.screen && screenshot.screen in SCREENS
+      ? (screenshot.screen as ScreenId)
+      : (state.ui.lastScreen as ScreenId) in SCREENS
+        ? (state.ui.lastScreen as ScreenId)
+        : 'command-center',
   );
+  const initialParams = React.useRef<NavParams>((screenshot?.params ?? {}) as NavParams);
 
   const onScreenChange = React.useCallback(
     (screen: ScreenId) => {
@@ -51,7 +56,11 @@ function Inner() {
 
   return (
     <AgentProvider>
-      <NavProvider initialScreen={initialScreen.current} onScreenChange={onScreenChange}>
+      <NavProvider
+        initialScreen={initialScreen.current}
+        initialParams={initialParams.current}
+        onScreenChange={onScreenChange}
+      >
         <Routed />
       </NavProvider>
     </AgentProvider>

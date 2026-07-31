@@ -25,6 +25,7 @@ export const IPC = {
   browserBlockedNavigation: 'browser:blocked-navigation',
 
   appInfo: 'app:info',
+  appScreenshotOptions: 'app:screenshot-options',
   appOpenExternalDenied: 'app:open-external-denied',
 } as const;
 
@@ -70,6 +71,28 @@ export interface AppInfo {
   statePath: string;
 }
 
+/**
+ * Documentation-capture options parsed from the command line. Always `null` in
+ * a packaged build — see `main/screenshot-mode.ts` for the gate and the
+ * reasoning. Nothing here grants a capability the UI does not already offer.
+ */
+export interface ScreenshotOptions {
+  /** Screen to land on instead of the persisted `ui.lastScreen`. */
+  screen?: string;
+  /** Theme to force before first paint. */
+  theme?: 'light' | 'dark';
+  /** Nav parameters for the initial screen, e.g. `{ jobId: 'job-x' }`. */
+  params?: Record<string, string>;
+  /** Opt-in view toggles a screen would otherwise require a click to reach. */
+  open?: string;
+  /** Mock page to preload into the embedded browser. Still allowlist-checked. */
+  url?: string;
+  /** Start the application's scenario automatically, at instant pacing. */
+  run?: boolean;
+  /** Exact content size for the window, for fixed-dimension captures. */
+  windowSize?: { width: number; height: number };
+}
+
 /** The complete surface exposed on `window.jobcopilot` by the preload bridge. */
 export interface JobCopilotBridge {
   state: {
@@ -95,5 +118,7 @@ export interface JobCopilotBridge {
   };
   app: {
     info(): Promise<AppInfo>;
+    /** `null` in any packaged build. */
+    screenshotOptions(): Promise<ScreenshotOptions | null>;
   };
 }

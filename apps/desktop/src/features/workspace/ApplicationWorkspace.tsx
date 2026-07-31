@@ -42,7 +42,7 @@ const MAX_LEFT = 720;
  */
 export function ApplicationWorkspace() {
   const { params, go } = useNav();
-  const { state, update } = useStore();
+  const { state, update, screenshot } = useStore();
   const agent = useAgent();
 
   const applicationId = params.applicationId ?? state.ui.lastApplicationId;
@@ -62,6 +62,26 @@ export function ApplicationWorkspace() {
         : { ...s, ui: { ...s.ui, lastApplicationId: applicationId } },
     );
   }, [applicationId, update]);
+
+  /* Documentation capture only. Inert unless a dev screenshot flag is set. */
+  const shotFired = React.useRef(false);
+  const { setPacingMs, startForApplication, pacingMs } = agent;
+  React.useEffect(() => {
+    if (!screenshot || shotFired.current || !applicationId) return;
+    if (!screenshot.run && !screenshot.url) return;
+    // Instant pacing first: the capture should photograph the stop the
+    // scenario reaches, not an arbitrary frame of its cosmetic animation.
+    if (screenshot.run && pacingMs !== 0) {
+      setPacingMs(0);
+      return;
+    }
+    shotFired.current = true;
+    void (async () => {
+      await window.jobcopilot.browser.attach();
+      if (screenshot.run) await startForApplication(applicationId);
+      else if (screenshot.url) await window.jobcopilot.browser.navigate(screenshot.url);
+    })();
+  }, [screenshot, applicationId, pacingMs, setPacingMs, startForApplication]);
 
   React.useEffect(() => {
     const onMove = (e: MouseEvent) => {

@@ -7,6 +7,7 @@ import type {
   JobCopilotBridge,
   NavState,
   Rect,
+  ScreenshotOptions,
 } from '@shared/ipc';
 import type { AppState } from '@shared/state';
 import type { MockPageState } from '@scenario-engine/types';
@@ -47,6 +48,8 @@ const bridge: JobCopilotBridge = {
   },
   app: {
     info: () => ipcRenderer.invoke(IPC.appInfo) as Promise<AppInfo>,
+    screenshotOptions: () =>
+      ipcRenderer.invoke(IPC.appScreenshotOptions) as Promise<ScreenshotOptions | null>,
   },
 };
 

@@ -31,6 +31,46 @@ These builds are **unsigned**. Windows SmartScreen shows a one-time warning — 
 
 Builds are produced by [`.github/workflows/release.yml`](.github/workflows/release.yml) on every `v*.*.*` tag push, running the full `verify` gate on Windows, macOS (arm64) and Linux runners in parallel.
 
+> **Known issue with the `v0.1.0` installers.** They fail on launch. The main-process bundle
+> stubbed out Node's built-in modules, so a transitive dependency called `tty.isatty()` on an
+> empty object before the first window opened. The `verify` gate did not catch it because dev
+> runs resolve builtins natively. This is fixed on `main`; until the next tag, build from
+> source with `npm run build:all`.
+
+---
+
+## Screenshots
+
+Real captures of the built app, not mockups. The full set — every screen, light and dark — is in
+[`docs/screenshots/`](docs/screenshots/README.md).
+
+**Application Workspace.** The agent works the form in a sandboxed `WebContentsView` on the right
+while every decision it makes is explained on the left. Here it has stopped at an approval gate:
+proposed answer, the reasoning, the vault facts it was built from, and who currently holds control.
+
+![Application Workspace, dark](docs/screenshots/application-workspace-dark.png)
+
+![Application Workspace, light](docs/screenshots/application-workspace-light.png)
+
+**Resume Studio — the refusal.** Asked to position a DevSecOps résumé, the assistant declines to
+promote "worked around Kubernetes deployments" into "owned production Kubernetes infrastructure".
+It shows the wording it would not write and the evidence that does and does not support it.
+
+![Resume Studio diff with the refusal card](docs/screenshots/resume-studio-refusal-light.png)
+
+**Command Center.** Triage shaped by what is waiting on you, with no applications-per-day counter.
+
+![Command Center](docs/screenshots/command-center-dark.png)
+
+**Job Intelligence.** A posting's match breakdown, with *Why this recommendation?* always expanded.
+
+![Job Intelligence](docs/screenshots/job-intelligence-dark.png)
+
+**Analytics.** Qualified interviews per hour of your attention — including how often the assistant
+refused to make a claim it could not support.
+
+![Analytics](docs/screenshots/analytics-light.png)
+
 ---
 
 ## Quick start
